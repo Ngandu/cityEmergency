@@ -1,0 +1,25 @@
+#### City Services
+
+* Police
+    - Report
+    - Emergency call
+
+* Fire
+    - Report Fire
+    - Emergency Fire
+
+* Water & Electricity report
+
+* Abulance - Request
+
+* Panic Button
+    - Get your coordinate
+    - Send out notification to relatives
+    - Send SMS
+
+* Billing- Request for your city outstanding bills
+    - Rates
+    - Water
+    = Electicity
+    - Traffic fines
+

@@ -1,0 +1,95 @@
+import {StyleSheet, Dimensions} from 'react-native';
+
+const Colors = {
+  gey: '#111111',
+  grey1: '#dddddd',
+  grey2: '#eeeeee',
+  yellow: '#eebb19',
+  red: '#f0504e',
+  white: '#ffffff',
+};
+
+export default StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#ffffff',
+  },
+  containerColmn: {
+    flexDirection: 'column',
+  },
+  containerRow: {
+    flexDirection: 'row',
+  },
+  centerText: {
+    textAlign: 'center',
+  },
+  input: {
+    marginVertical: 2,
+    marginBottom: 10,
+  },
+  homecontainer: {
+    paddingTop: 90,
+  },
+  homeButton: {
+    backgroundColor: Colors.yellow,
+    flex: 0.5,
+    textAlign: 'center',
+    margin: 5,
+    paddingTop: 80,
+    paddingBottom: 80,
+    borderRadius: 20,
+  },
+  homeButtonText: {
+    color: Colors.white,
+    textAlign: 'center',
+  },
+  panicBtn: {
+    backgroundColor: Colors.red,
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  card: {
+    backgroundColor: Colors.white,
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  cardHeader: {
+    marginBottom: 10,
+    borderBottomColor: Colors.grey1,
+    borderBottomWidth: 1,
+  },
+  cardfooter: {
+    flexDirection: 'row',
+    marginTop: 20,
+    borderTopColor: Colors.grey1,
+    borderTopWidth: 1,
+  },
+  profileHeader: {
+    backgroundColor: Colors.yellow,
+    paddingTop: 140,
+    paddingBottom: 40,
+  },
+  profileName: {
+    textAlign: 'center',
+    color: Colors.white,
+  },
+  profileDetails: {
+    padding: 30,
+    backgroundColor: Colors.white,
+  },
+  personalDetails: {
+    marginBottom: 20,
+    paddingBottom: 20,
+    borderBottomColor: Colors.grey,
+    borderBottomWidth: 0.5,
+  },
+  modalBody: {
+    backgroundColor: Colors.white,
+    padding: 10,
+    width: 400,
+    borderRadius: 10,
+  },
+});
