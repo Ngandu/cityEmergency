@@ -1,28 +1,29 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from "react-native";
 
 const Colors = {
-  gey: '#111111',
-  grey1: '#dddddd',
-  grey2: '#eeeeee',
-  yellow: '#eebb19',
-  red: '#f0504e',
-  white: '#ffffff',
+  gey: "#111111",
+  grey1: "#dddddd",
+  grey2: "#eeeeee",
+  yellow: "#eebb19",
+  red: "#f0504e",
+  white: "#ffffff",
+  blue: "#4c8bf5",
 };
 
 export default StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
   },
   containerColmn: {
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   containerRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   centerText: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   input: {
     marginVertical: 2,
@@ -34,7 +35,7 @@ export default StyleSheet.create({
   homeButton: {
     backgroundColor: Colors.yellow,
     flex: 0.5,
-    textAlign: 'center',
+    textAlign: "center",
     margin: 5,
     paddingTop: 80,
     paddingBottom: 80,
@@ -42,13 +43,13 @@ export default StyleSheet.create({
   },
   homeButtonText: {
     color: Colors.white,
-    textAlign: 'center',
+    textAlign: "center",
   },
   panicBtn: {
     backgroundColor: Colors.red,
   },
   backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   card: {
     backgroundColor: Colors.white,
@@ -62,7 +63,7 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
   },
   cardfooter: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 20,
     borderTopColor: Colors.grey1,
     borderTopWidth: 1,
@@ -73,7 +74,7 @@ export default StyleSheet.create({
     paddingBottom: 40,
   },
   profileName: {
-    textAlign: 'center',
+    textAlign: "center",
     color: Colors.white,
   },
   profileDetails: {
@@ -91,5 +92,32 @@ export default StyleSheet.create({
     padding: 10,
     width: 400,
     borderRadius: 10,
+  },
+  authFormContainer: {
+    marginTop: Dimensions.get("screen").height / 4,
+    marginHorizontal: 50,
+    textAlign: "center",
+  },
+  authHeader: {
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  authInput: {
+    borderRadius: 50,
+    backgroundColor: Colors.white,
+    marginBottom: 20,
+    borderColor: Colors.white,
+    color: Colors.white,
+  },
+  authButton: {
+    borderRadius: 50,
+    backgroundColor: Colors.yellow,
+    borderColor: Colors.yellow,
+  },
+  authGoogleButton: {
+    borderRadius: 50,
+    backgroundColor: Colors.blue,
+    borderColor: Colors.blue,
+    marginTop: 20,
   },
 });
