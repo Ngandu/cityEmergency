@@ -116,6 +116,61 @@ export async function deleteRelatives(id) {
   }
 }
 
+// Send Incedent
+export async function sendIncedence(inc) {
+  console.log("sendIncedence");
+  try {
+    const db = firebase.firestore();
+    await db.collection("incedents").add(inc);
+    return true;
+  } catch (error) {
+    console.log(error);
+    Alert.alert("There is something wrong!", error.message);
+  }
+}
+
+// Get all Open incedents
+
+export async function getIncedents(userid) {
+  try {
+    const db = firebase.firestore();
+    let inc = [];
+    await db
+      .collection("incedents")
+      .where("userid", "==", userid)
+      .where("status", "==", "Open")
+      .where("service", "!=", "Panic")
+      .get()
+      .then((snap) => {
+        snap.docs.forEach((element) => {
+          let temp = element.data();
+          temp.id = element.id;
+          inc.push(temp);
+        });
+      });
+
+    return inc;
+  } catch (error) {
+    Alert.alert("There is something wrong!", error.message);
+    console.log(error.message);
+  }
+}
+
+// Close Incedent
+
+export async function closeIncedent(inc) {
+  console.log("Update Incident");
+  inc.status = "Closed";
+  // console.log(inc);
+  try {
+    const db = firebase.firestore();
+    await db.collection("incedents").doc(inc.id).update(inc);
+    return true;
+  } catch (err) {
+    Alert.alert("There is something wrong!", err.message);
+  }
+}
+
 export async function registerWithGoogle() {
   console.log("google");
   //return;

@@ -22,6 +22,7 @@ import { loggingOut } from "./../sdk/FirebaseMethods";
 
 // Mobx Stores
 import UserStore from "./../stores/userStore";
+import ServiceStore from "./../stores/serviceStore";
 
 // Import Screens
 import Home from "../screens/Home";
@@ -29,13 +30,19 @@ import Profile from "../screens/Profile";
 import Emergencies from "../screens/Emergencies";
 import Signin from "../screens/Signin";
 import Signup from "../screens/Signup";
+import Service from "../screens/Service";
 
 // Convert Screens
-const MHome = () => <Home></Home>;
+const MHome = () => (
+  <Home serviceStore={ServiceStore} userstore={UserStore}></Home>
+);
 const MProfile = () => <Profile userstore={UserStore}></Profile>;
-const MEmergencies = () => <Emergencies></Emergencies>;
+const MEmergencies = () => <Emergencies userstore={UserStore}></Emergencies>;
 const MSignin = () => <Signin userstore={UserStore}></Signin>;
 const MSignup = () => <Signup userstore={UserStore}></Signup>;
+const MService = () => (
+  <Service userstore={UserStore} serviceStore={ServiceStore}></Service>
+);
 
 // Navoigation stacks
 
@@ -54,6 +61,28 @@ function AuthStack(props) {
         component={MSignup}
         options={({ navigation }) => ({
           headerShown: false,
+        })}
+      />
+    </Stack.Navigator>
+  );
+}
+// Home stack
+
+function HomeStack(props) {
+  return (
+    <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen
+        name="Home"
+        component={MHome}
+        options={({ navigation }) => ({
+          headerShown: false,
+        })}
+      />
+      <Stack.Screen
+        name="Service"
+        component={MService}
+        options={({ navigation }) => ({
+          headerShown: true,
         })}
       />
     </Stack.Navigator>
@@ -110,7 +139,7 @@ function ApplicationTabs(props) {
     >
       <Tab.Screen
         name="Home"
-        component={MHome}
+        component={HomeStack}
         options={({ navigation }) => ({ headerShown: false })}
       />
       <Tab.Screen

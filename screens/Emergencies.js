@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -6,68 +6,94 @@ import {
   ScrollView,
   ImageBackground,
   Dimensions,
-} from 'react-native';
-import {observer} from 'mobx-react-lite';
-import * as eva from '@eva-design/eva';
-import {ApplicationProvider, Layout, Text, Button} from '@ui-kitten/components';
+} from "react-native";
+import { observer } from "mobx-react-lite";
+import * as eva from "@eva-design/eva";
+import {
+  ApplicationProvider,
+  Layout,
+  Text,
+  Button,
+} from "@ui-kitten/components";
 
-import Styles from '../Styles';
+import { getIncedents, closeIncedent } from "../sdk/FirebaseMethods";
 
-const Emergencies = observer(() => {
-  const [Products, setProducts] = useState([]);
-  const windowHeight = Dimensions.get('screen').height;
-  useEffect(() => {
+import Styles from "../Styles";
+
+const Emergencies = observer(({ userstore }) => {
+  const windowHeight = Dimensions.get("screen").height;
+  const [Incedents, setIncedents] = useState([]);
+
+  const fetchincedents = async () => {
+    const inc = await getIncedents(userstore.user.uid);
+    if (inc.length > 0) {
+      setIncedents(inc);
+    }
+  };
+
+  useLayoutEffect(() => {
     // Fetch Products
-    console.log('Home');
+    console.log("Emergencies");
+    // fetch Incidents
+    fetchincedents();
   }, []);
+
+  const updateInc = async (inc) => {
+    let ret = await closeIncedent(inc);
+    if (ret) {
+      fetchincedents();
+    }
+  };
+
+  console.log(Incedents);
 
   return (
     <ImageBackground
-      source={require('../assets/backdrop.jpg')}
+      source={require("../assets/backdrop.jpg")}
       resizeMode="cover"
       style={{
         fex: 1,
         height: windowHeight - 50,
         padding: 10,
         paddingTop: 100,
-      }}>
+      }}
+    >
       <ScrollView>
         <View>
           <ApplicationProvider {...eva} theme={eva.light}>
-            <TouchableHighlight style={Styles.card}>
-              <View>
-                <Text category="h5" style={Styles.cardHeader}>
-                  Emergencies header Tet
-                </Text>
-                <Text>
-                  Fermentum enim ea rem rutrum voluptates diamlorem mi, metus
-                  mi! Excepteur laoreet sapiente torquent wisi! Fermentum
-                  aliquid, ullamco bibendum facilisis.
-                </Text>
-                <View style={Styles.cardfooter}>
-                  <Button appearance="ghost" status="info">
-                    View
-                  </Button>
-                </View>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight style={Styles.card}>
-              <View>
-                <Text category="h5" style={Styles.cardHeader}>
-                  Emergencies header Tet
-                </Text>
-                <Text>
-                  Fermentum enim ea rem rutrum voluptates diamlorem mi, metus
-                  mi! Excepteur laoreet sapiente torquent wisi! Fermentum
-                  aliquid, ullamco bibendum facilisis.
-                </Text>
-                <View style={Styles.cardfooter}>
-                  <Button appearance="ghost" status="info">
-                    View
-                  </Button>
-                </View>
-              </View>
-            </TouchableHighlight>
+            {Incedents.length > 0 ? (
+              Incedents.map((inc, key) => {
+                let d = inc.incent_date.toDate();
+                let dd = new Date(d);
+                let ddd =
+                  dd.getDate() + "/" + dd.getMonth() + "/" + dd.getFullYear();
+                // console.log(ddd);
+                return (
+                  <View style={Styles.card} key={key}>
+                    <View>
+                      <Text category="h5" style={Styles.cardHeader}>
+                        {inc.service + ": " + inc.title}
+                      </Text>
+                      <Text>{inc.message}</Text>
+                      <Text appearance="hint" style={{ marginTop: 20 }}>
+                        Date: {ddd}
+                      </Text>
+                      <View style={Styles.cardfooter}>
+                        <Button
+                          appearance="ghost"
+                          status="info"
+                          onPress={() => updateInc(inc)}
+                        >
+                          Close
+                        </Button>
+                      </View>
+                    </View>
+                  </View>
+                );
+              })
+            ) : (
+              <Text>You have no incedent reported that not closed.</Text>
+            )}
           </ApplicationProvider>
         </View>
       </ScrollView>

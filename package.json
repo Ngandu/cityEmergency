@@ -16,6 +16,7 @@
     "@ui-kitten/components": "^5.1.1",
     "@ui-kitten/eva-icons": "^5.1.1",
     "expo": "~42.0.1",
+    "expo-location": "~12.1.2",
     "expo-status-bar": "~1.0.4",
     "firebase": "8.2.3",
     "mobx": "^6.3.3",

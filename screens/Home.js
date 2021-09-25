@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import {
   View,
   TouchableHighlight,
@@ -6,9 +6,10 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
-} from 'react-native';
-import {observer} from 'mobx-react-lite';
-import * as eva from '@eva-design/eva';
+} from "react-native";
+import { observer } from "mobx-react-lite";
+import * as Location from "expo-location";
+import * as eva from "@eva-design/eva";
 import {
   ApplicationProvider,
   Layout,
@@ -16,60 +17,123 @@ import {
   Button,
   Modal,
   Input,
-} from '@ui-kitten/components';
+} from "@ui-kitten/components";
+import { useNavigation } from "@react-navigation/native";
 
-import Styles from '../Styles';
+import { sendIncedence } from "./../sdk/FirebaseMethods";
 
-const Home = observer(() => {
+import Styles from "../Styles";
+
+const Home = observer(({ userstore, serviceStore }) => {
+  const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
-  const windowHeight = Dimensions.get('screen').height;
+  const [location, setLocation] = useState({});
+  const windowHeight = Dimensions.get("screen").height;
+  const [Service, setService] = useState("");
+
+  useLayoutEffect(() => {
+    console.log("useLayoutEffect");
+    // Get permission for Coordinate
+    (async () => {
+      console.log("starta async");
+      let { status } = await Location.requestPermissionsAsync();
+      console.log(status);
+      if (status !== "granted") return;
+
+      let location = await Location.getCurrentPositionAsync({});
+      let coordinates = {
+        lat: location.coords.latitude,
+        long: location.coords.longitude,
+      };
+      console.log("Location: ", coordinates);
+      setLocation(coordinates);
+    })();
+  }, []);
 
   useEffect(() => {
     // Fetch Products
-    console.log('Home');
-  }, []);
+    console.log(Service);
+  }, [Service]);
+
+  setIncedent = (inc) => {
+    serviceStore.setService(inc);
+    navigation.navigate("Service");
+  };
+
+  // The panic button
+
+  const panicBtn = async () => {
+    console.log("panic");
+    const incedentData = {
+      location,
+      service: "Panic",
+      userid: userstore.user.uid,
+      incent_date: new Date(),
+    };
+    const rt = await sendIncedence(incedentData);
+    if (rt) {
+      alert("The control center has been notified!");
+    }
+  };
 
   return (
     <ImageBackground
-      source={require('../assets/backdrop.jpg')}
+      source={require("../assets/backdrop.jpg")}
       resizeMode="cover"
-      style={{fex: 1, height: '100%'}}>
+      style={{ fex: 1, height: "100%" }}
+    >
       <ScrollView>
         <View>
           <ApplicationProvider {...eva} theme={eva.light}>
             <View style={[Styles.containerRow, Styles.homecontainer]}>
               <TouchableHighlight
                 style={Styles.homeButton}
-                onPress={() => setVisible(true)}>
+                onPress={() => setIncedent("Police")}
+              >
                 <Text category="h4" style={Styles.homeButtonText}>
                   Police
                 </Text>
               </TouchableHighlight>
-              <TouchableHighlight style={Styles.homeButton}>
+              <TouchableHighlight
+                style={Styles.homeButton}
+                onPress={() => setIncedent("Ambulance")}
+              >
                 <Text category="h4" style={Styles.homeButtonText}>
                   Ambulance
                 </Text>
               </TouchableHighlight>
             </View>
             <View style={Styles.containerRow}>
-              <TouchableHighlight style={Styles.homeButton}>
+              <TouchableHighlight
+                style={Styles.homeButton}
+                onPress={() => setIncedent("Electricity")}
+              >
                 <Text category="h4" style={Styles.homeButtonText}>
                   Electricity
                 </Text>
               </TouchableHighlight>
-              <TouchableHighlight style={Styles.homeButton}>
+              <TouchableHighlight
+                style={Styles.homeButton}
+                onPress={() => setIncedent("Water")}
+              >
                 <Text category="h4" style={Styles.homeButtonText}>
                   Water
                 </Text>
               </TouchableHighlight>
             </View>
             <View style={Styles.containerRow}>
-              <TouchableHighlight style={Styles.homeButton}>
+              <TouchableHighlight
+                style={Styles.homeButton}
+                onPress={() => setIncedent("Fire")}
+              >
                 <Text category="h4" style={Styles.homeButtonText}>
                   Fire
                 </Text>
               </TouchableHighlight>
-              <TouchableHighlight style={[Styles.homeButton, Styles.panicBtn]}>
+              <TouchableHighlight
+                style={[Styles.homeButton, Styles.panicBtn]}
+                onPress={() => panicBtn()}
+              >
                 <Text category="h4" style={Styles.homeButtonText}>
                   Panic
                 </Text>
@@ -80,10 +144,11 @@ const Home = observer(() => {
             <Modal
               visible={visible}
               backdropStyle={{
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
                 height: windowHeight,
               }}
-              onBackdropPress={() => setVisible(false)}>
+              onBackdropPress={() => setVisible(false)}
+            >
               <View style={Styles.modalBody}>
                 <Text category="h3" style={Styles.centerText}>
                   Alert Police
@@ -96,7 +161,7 @@ const Home = observer(() => {
 
                 <Input
                   multiline={true}
-                  textStyle={{minHeight: 64}}
+                  textStyle={{ minHeight: 64 }}
                   placeholder="Multiline"
                   style={Styles.input}
                 />
