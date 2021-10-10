@@ -33,6 +33,7 @@ const Home = observer(({ userstore, serviceStore }) => {
 
   useLayoutEffect(() => {
     console.log("useLayoutEffect");
+    console.log(userstore.user.uid);
     // Get permission for Coordinate
     (async () => {
       console.log("starta async");

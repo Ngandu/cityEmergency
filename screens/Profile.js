@@ -117,8 +117,6 @@ const Profile = observer(({ userstore }) => {
     }
   };
 
-  console.log(Relatives);
-
   return (
     <ImageBackground
       source={require("../assets/backdrop.jpg")}

@@ -120,4 +120,10 @@ export default StyleSheet.create({
     borderColor: Colors.blue,
     marginTop: 20,
   },
+  listItem: {
+    backgroundColor: Colors.white,
+    padding: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.grey2,
+  },
 });

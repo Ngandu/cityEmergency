@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView, ImageBackground } from "react-native";
+import { View, ScrollView, ImageBackground, Pressable } from "react-native";
 import { observer } from "mobx-react-lite";
 import * as eva from "@eva-design/eva";
 import {
@@ -17,6 +17,8 @@ import { sendIncedence } from "./../sdk/FirebaseMethods";
 
 import { signInUser } from "./../sdk/FirebaseMethods";
 
+import axios from "axios";
+
 const Service = observer(({ userstore, serviceStore }) => {
   const [visible, setVisible] = useState(false);
   const navigation = useNavigation();
@@ -25,6 +27,8 @@ const Service = observer(({ userstore, serviceStore }) => {
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [message, setMessage] = useState("");
+  const [incloca, setInceLoc] = useState([]);
+  const [AddressOptions, setAddressOptions] = useState([]);
 
   useEffect(() => {
     // Fetch Products
@@ -44,6 +48,7 @@ const Service = observer(({ userstore, serviceStore }) => {
     const incedentData = {
       title,
       address,
+      location: incloca,
       message,
       service: serviceStore.service,
       userid: userstore.user.uid,
@@ -55,6 +60,27 @@ const Service = observer(({ userstore, serviceStore }) => {
       alert("Incedent sent");
       clearForm();
     }
+  };
+
+  useEffect(() => {
+    authocompleteAddress();
+  }, [address]);
+
+  const authocompleteAddress = async () => {
+    if (address.length < 5) return;
+
+    let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=pk.eyJ1IjoibnBhdHJpY2siLCJhIjoiY2l4dHpuNWV0MDAyZzMyb2o4YWpmOXg3YiJ9.SekPOie0OLLB3_YNnpsD7Q`;
+    const addressOptions = await axios.get(url);
+    console.log(addressOptions);
+    if (addressOptions.data.features.length == 1) return;
+    setAddressOptions(addressOptions.data.features);
+  };
+
+  const handleAutoCompleteListClick = (address) => {
+    console.log("Selected address: ", address);
+    setAddress(address.place_name);
+    setInceLoc(address.center);
+    setAddressOptions([]);
   };
 
   return (
@@ -84,6 +110,18 @@ const Service = observer(({ userstore, serviceStore }) => {
                 onChangeText={(text) => setAddress(text)}
                 style={Styles.input}
               />
+              {AddressOptions.map((address, i) => {
+                return (
+                  <Pressable
+                    key={i}
+                    style={Styles.listItem}
+                    onPress={() => handleAutoCompleteListClick(address)}
+                  >
+                    <Text>{address.place_name}</Text>
+                  </Pressable>
+                );
+              })}
+
               <Input
                 multiline={true}
                 textStyle={{ minHeight: 64 }}
