@@ -19,10 +19,12 @@ import {
 import { getIncedents, closeIncedent } from "../sdk/FirebaseMethods";
 
 import Styles from "../Styles";
+import { useNavigation } from "@react-navigation/native";
 
-const Emergencies = observer(({ userstore }) => {
+const Emergencies = observer(({ userstore, serviceStore }) => {
   const windowHeight = Dimensions.get("screen").height;
   const [Incedents, setIncedents] = useState([]);
+  const navigation = useNavigation();
 
   const fetchincedents = async () => {
     const inc = await getIncedents(userstore.user.uid);
@@ -43,6 +45,11 @@ const Emergencies = observer(({ userstore }) => {
     if (ret) {
       fetchincedents();
     }
+  };
+
+  const selectedEmergency = (inc) => {
+    serviceStore.setEmergency(inc);
+    navigation.navigate("EmergencyView");
   };
 
   console.log(Incedents);
@@ -85,6 +92,13 @@ const Emergencies = observer(({ userstore }) => {
                           onPress={() => updateInc(inc)}
                         >
                           Close
+                        </Button>
+                        <Button
+                          appearance="ghost"
+                          status="info"
+                          onPress={() => selectedEmergency(inc)}
+                        >
+                          View
                         </Button>
                       </View>
                     </View>

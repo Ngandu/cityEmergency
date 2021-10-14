@@ -206,3 +206,28 @@ export async function passwordReset(email) {
     Alert.alert("There is something wrong!", error.message);
   }
 }
+
+// fetch responses
+
+export async function fetchresponses(id) {
+  try {
+    const db = firebase.firestore();
+
+    const querySnapshot = await db
+      .collection("responses")
+      .orderBy("respnsetime", "desc")
+      .where("incedentId", "==", id)
+      .get();
+
+    let temp = [];
+    querySnapshot.forEach((doc) => {
+      //console.log(doc.id);
+      temp.push({ id: doc.id, ...doc.data() });
+    });
+
+    return temp;
+  } catch (error) {
+    console.log(error);
+    return error.message;
+  }
+}

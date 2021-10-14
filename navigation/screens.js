@@ -28,6 +28,7 @@ import ServiceStore from "./../stores/serviceStore";
 import Home from "../screens/Home";
 import Profile from "../screens/Profile";
 import Emergencies from "../screens/Emergencies";
+import EmergencyView from "../screens/EmergencyView";
 import Signin from "../screens/Signin";
 import Signup from "../screens/Signup";
 import Service from "../screens/Service";
@@ -37,7 +38,15 @@ const MHome = () => (
   <Home serviceStore={ServiceStore} userstore={UserStore}></Home>
 );
 const MProfile = () => <Profile userstore={UserStore}></Profile>;
-const MEmergencies = () => <Emergencies userstore={UserStore}></Emergencies>;
+const MEmergencies = () => (
+  <Emergencies userstore={UserStore} serviceStore={ServiceStore}></Emergencies>
+);
+const MEmergencyView = () => (
+  <EmergencyView
+    userstore={UserStore}
+    serviceStore={ServiceStore}
+  ></EmergencyView>
+);
 const MSignin = () => <Signin userstore={UserStore}></Signin>;
 const MSignup = () => <Signup userstore={UserStore}></Signup>;
 const MService = () => (
@@ -81,6 +90,28 @@ function HomeStack(props) {
       <Stack.Screen
         name="Service"
         component={MService}
+        options={({ navigation }) => ({
+          headerShown: true,
+        })}
+      />
+    </Stack.Navigator>
+  );
+}
+// Emergency stack
+
+function EmergencyStack(props) {
+  return (
+    <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen
+        name="Emergencies"
+        component={MEmergencies}
+        options={({ navigation }) => ({
+          headerShown: false,
+        })}
+      />
+      <Stack.Screen
+        name="EmergencyView"
+        component={MEmergencyView}
         options={({ navigation }) => ({
           headerShown: true,
         })}
@@ -144,7 +175,7 @@ function ApplicationTabs(props) {
       />
       <Tab.Screen
         name="Emergencies"
-        component={MEmergencies}
+        component={EmergencyStack}
         options={({ navigation }) => ({ headerShown: false })}
       />
       <Tab.Screen

@@ -101,6 +101,7 @@ const Signin = observer(({ userstore }) => {
                 defaultValue={password}
                 onChangeText={(text) => setPassword(text)}
                 style={Styles.authInput}
+                secureTextEntry={true}
               />
               <Button style={Styles.authButton} onPress={() => handleSignin()}>
                 {loading ? (

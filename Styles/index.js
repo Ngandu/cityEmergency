@@ -126,4 +126,21 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.grey2,
   },
+  response: {
+    backgroundColor: Colors.blue,
+    borderRadius: 5,
+    marginTop: 5,
+    marginBottom: 5,
+    padding: 8,
+  },
+  responsemsg: {
+    color: Colors.white,
+    marginTop: 5,
+    marginBottom: 5,
+    fontSize: 18,
+  },
+  responsesmall: {
+    fontSize: 10,
+    color: Colors.grey,
+  },
 });

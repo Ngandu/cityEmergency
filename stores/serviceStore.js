@@ -3,6 +3,7 @@ import { makeAutoObservable } from "mobx";
 class ServiceStore {
   //observables
   service = "";
+  selectedEmergency = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -12,6 +13,11 @@ class ServiceStore {
   setService(serv) {
     console.log("setService");
     this.service = serv;
+  }
+
+  setEmergency(emg) {
+    console.log("setEmergency");
+    this.selectedEmergency = emg;
   }
 }
 
