@@ -1,6 +1,10 @@
 import * as firebase from "firebase";
+import "firebase/auth";
 import "firebase/firestore";
 import { Alert } from "react-native";
+
+import axios from "axios";
+import UserStore from "./../stores/userStore";
 
 export async function registration(
   email,
@@ -230,4 +234,50 @@ export async function fetchresponses(id) {
     console.log(error);
     return error.message;
   }
+}
+
+/// Panic Button
+
+export async function sendPanicSMS(coor, userid) {
+  const db = firebase.firestore();
+
+  const UserDetails = await db
+    .collection("users")
+    .where("userid", "==", userid)
+    .get()
+    .then((querySnapshot) => {
+      let boom = [];
+      querySnapshot.forEach((doc) => {
+        let userD = doc.data();
+        console.log("userD", userD);
+        boom.push(userD);
+      });
+      return boom;
+      // console.log("boom", boom);
+    })
+    .catch((err) => console.log(err));
+
+  const relatives = await db
+    .collection("relatives")
+    .where("userid", "==", userid)
+    .get()
+    .then((data) => {
+      data.forEach((doc) => {
+        // console.log(doc);
+        let temp = { ...doc.data() };
+        console.log(temp.cellphone);
+        axios
+          .post("https://brownsphere.co.za/sms/", {
+            emergency: 1,
+            fullname: `${UserDetails[0].firstName} ${UserDetails[0].lastName}`,
+            cell: temp.cellphone,
+            address: `lat: ${coor.lat} - long: ${coor.long}`,
+          })
+          .then(function (response) {
+            console.log(response);
+          });
+      });
+    });
+
+  console.log("UserDetails", UserDetails);
 }

@@ -20,7 +20,7 @@ import {
 } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 
-import { sendIncedence } from "./../sdk/FirebaseMethods";
+import { sendIncedence, sendPanicSMS } from "./../sdk/FirebaseMethods";
 
 import Styles from "../Styles";
 
@@ -37,7 +37,7 @@ const Home = observer(({ userstore, serviceStore }) => {
     // Get permission for Coordinate
     (async () => {
       console.log("starta async");
-      let { status } = await Location.requestPermissionsAsync();
+      let { status } = await Location.requestForegroundPermissionsAsync();
       console.log(status);
       if (status !== "granted") return;
 
@@ -73,7 +73,10 @@ const Home = observer(({ userstore, serviceStore }) => {
     };
     const rt = await sendIncedence(incedentData);
     if (rt) {
-      alert("The control center has been notified!");
+      await sendPanicSMS(location, userstore.user.uid);
+      alert(
+        "The control center has been notified and your relative contacted!"
+      );
     }
   };
 

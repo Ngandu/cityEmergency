@@ -18,6 +18,7 @@ import {
   Modal,
   Input,
   Icon,
+  Spinner,
 } from "@ui-kitten/components";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -37,6 +38,7 @@ const Signin = observer(({ userstore }) => {
   useEffect(() => {
     // Fetch Products
     console.log("Signin.js");
+    setLoading(true);
   }, []);
 
   const emptyState = () => {
@@ -50,13 +52,16 @@ const Signin = observer(({ userstore }) => {
     if (!email) {
       Alert.alert("Email field is required.");
       setLoading(false);
+      return;
     } else if (!password) {
       Alert.alert("Password field is required.");
       setLoading(false);
+      return;
     } else {
       const user = await signInUser(email, password);
       console.log(user);
       if (user) {
+        setLoading(false);
         userstore.setUser(user);
       }
       // navigation.navigate("Loading");
@@ -103,20 +108,25 @@ const Signin = observer(({ userstore }) => {
                 style={Styles.authInput}
                 secureTextEntry={true}
               />
-              <Button style={Styles.authButton} onPress={() => handleSignin()}>
-                {loading ? (
-                  <ActivityIndicator
-                    animating={loading}
-                    color="white"
-                  ></ActivityIndicator>
-                ) : (
-                  "SIGNIN"
-                )}
-              </Button>
-              <Button style={Styles.authGoogleButton}>
+              {loading ? (
+                <Button
+                  style={Styles.authButton}
+                  onPress={() => handleSignin()}
+                >
+                  <ActivityIndicator animating={true} color="white" />
+                </Button>
+              ) : (
+                <Button
+                  style={Styles.authButton}
+                  onPress={() => handleSignin()}
+                >
+                  SIGNIN
+                </Button>
+              )}
+              {/* <Button style={Styles.authGoogleButton}>
                 <FontAwesome5 name="google" size={14} color="white" /> Sign in
                 with Google
-              </Button>
+              </Button> */}
               <Button
                 appearance="ghost"
                 status="basic"

@@ -21,6 +21,8 @@ import {
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { registration, registerWithGoogle } from "./../sdk/FirebaseMethods";
+import * as firebase from "firebase";
+import "firebase/auth";
 
 import Styles from "../Styles";
 
@@ -28,6 +30,8 @@ const Signup = observer(({ userstore }) => {
   const [visible, setVisible] = useState(false);
   const windowHeight = Dimensions.get("screen").height;
   const navigation = useNavigation();
+
+  const [loading, setloading] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -51,21 +55,36 @@ const Signup = observer(({ userstore }) => {
   };
 
   const handleRegistration = async () => {
+    setloading(true);
     if (!firstname) {
       Alert.alert("First name is required");
+      setloading(false);
+      return;
     } else if (!secondname) {
       Alert.alert("Second name field is required.");
+      setloading(false);
+      return;
     } else if (!email) {
       Alert.alert("Email field is required.");
+      setloading(false);
+      return;
     } else if (!password) {
       Alert.alert("Password field is required.");
+      setloading(false);
+      return;
     } else if (!passwordrpt) {
       setPassword("");
       Alert.alert("Confirm password field is required.");
+      setloading(false);
+      return;
     } else if (!cellphone) {
       Alert.alert("Ccellphone field is required.");
+      setloading(false);
+      return;
     } else if (password !== passwordrpt) {
       Alert.alert("Password does not match!");
+      setloading(false);
+      return;
     } else {
       registration(email, password, secondname, firstname, cellphone);
       // navigation.navigate("Loading");
@@ -77,6 +96,7 @@ const Signup = observer(({ userstore }) => {
           // Update Mobx User and Login
           console.log("setUser");
           userstore.setUser(user);
+          setloading(false);
           //navigation.replace("Home");
         }
       });
@@ -140,10 +160,10 @@ const Signup = observer(({ userstore }) => {
               >
                 SIGNUP
               </Button>
-              <Button style={Styles.authGoogleButton}>
+              {/* <Button style={Styles.authGoogleButton}>
                 <FontAwesome5 name="google" size={14} color="white" /> Sign in
                 with Google
-              </Button>
+              </Button> */}
               <Button
                 appearance="ghost"
                 status="basic"
