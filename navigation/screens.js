@@ -79,9 +79,14 @@ function AuthStack(props) {
 
 function HomeStack(props) {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator
+      initialRouteName="HomeMain"
+      options={({ navigation }) => ({
+        headerShown: false,
+      })}
+    >
       <Stack.Screen
-        name="Home"
+        name="HomeMain"
         component={MHome}
         options={({ navigation }) => ({
           headerShown: false,
@@ -92,6 +97,10 @@ function HomeStack(props) {
         component={MService}
         options={({ navigation }) => ({
           headerShown: true,
+          headerStyle: {
+            backgroundColor: "#eebb19",
+          },
+          headerTintColor: "#fff",
         })}
       />
     </Stack.Navigator>
@@ -101,9 +110,9 @@ function HomeStack(props) {
 
 function EmergencyStack(props) {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="EmergenciesHome">
       <Stack.Screen
-        name="Emergencies"
+        name="EmergenciesHome"
         component={MEmergencies}
         options={({ navigation }) => ({
           headerShown: false,
@@ -114,6 +123,10 @@ function EmergencyStack(props) {
         component={MEmergencyView}
         options={({ navigation }) => ({
           headerShown: true,
+          headerStyle: {
+            backgroundColor: "#eebb19",
+          },
+          headerTintColor: "#fff",
         })}
       />
     </Stack.Navigator>
@@ -141,32 +154,26 @@ function ApplicationTabs(props) {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({ route }) => ({
+        tabBarStyle: { backgroundColor: "#eebb19", color: "#111111" },
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === "Home") {
-            return <AntDesign name="home" size={16} color="black" />;
+            return <AntDesign name="home" size={20} color="black" />;
           } else if (route.name === "Emergencies") {
             return (
               <Ionicons
                 name="ios-alert-circle-outline"
-                size={16}
+                size={20}
                 color="black"
               />
             );
           } else if (route.name === "Profile") {
-            return <AntDesign name="user" size={16} color="black" />;
+            return <AntDesign name="user" size={20} color="black" />;
           } else if (route.name === "Signout") {
-            return <Ionicons name="log-out-outline" size={16} color="black" />;
+            return <Ionicons name="log-out-outline" size={20} color="black" />;
           }
         },
+        headerShown: false,
       })}
-      cardStyle={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-      tabBarOptions={{
-        activeTintColor: "#ff8888",
-        inactiveTintColor: "#eeeeee",
-        style: {
-          backgroundColor: "#111111",
-        },
-      }}
     >
       <Tab.Screen
         name="Home"
@@ -212,7 +219,12 @@ const Screens = observer(({ navigation }) => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator mode="model" headerMode="none">
+      <Stack.Navigator
+        screenOptions={({ navigation }) => ({
+          headerShown: false,
+          presentation: "model",
+        })}
+      >
         {renderScreen()}
         {/* {renderScreen()} */}
         {/* {!loggedIn && <Stack.Screen name="Auth" component={AuthStack} />}

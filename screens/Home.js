@@ -21,6 +21,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 import { sendIncedence, sendPanicSMS } from "./../sdk/FirebaseMethods";
+import Spinner from "./components/Spinner";
 
 import Styles from "../Styles";
 
@@ -30,6 +31,7 @@ const Home = observer(({ userstore, serviceStore }) => {
   const [location, setLocation] = useState({});
   const windowHeight = Dimensions.get("screen").height;
   const [Service, setService] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useLayoutEffect(() => {
     console.log("useLayoutEffect");
@@ -49,6 +51,7 @@ const Home = observer(({ userstore, serviceStore }) => {
       console.log("Location: ", coordinates);
       setLocation(coordinates);
     })();
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -64,6 +67,7 @@ const Home = observer(({ userstore, serviceStore }) => {
   // The panic button
 
   const panicBtn = async () => {
+    setLoading(true);
     console.log("panic");
     const incedentData = {
       location,
@@ -77,6 +81,7 @@ const Home = observer(({ userstore, serviceStore }) => {
       alert(
         "The control center has been notified and your relative contacted!"
       );
+      setLoading(false);
     }
   };
 
@@ -88,6 +93,7 @@ const Home = observer(({ userstore, serviceStore }) => {
     >
       <ScrollView>
         <View>
+          {loading && <Spinner />}
           <ApplicationProvider {...eva} theme={eva.light}>
             <View style={[Styles.containerRow, Styles.homecontainer]}>
               <TouchableHighlight

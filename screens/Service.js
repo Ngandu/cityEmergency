@@ -15,7 +15,7 @@ import Styles from "../Styles";
 
 import { sendIncedence } from "./../sdk/FirebaseMethods";
 
-import { signInUser } from "./../sdk/FirebaseMethods";
+import Spinner from "./components/Spinner";
 
 import axios from "axios";
 
@@ -44,6 +44,7 @@ const Service = observer(({ userstore, serviceStore }) => {
   }
 
   const sendInc = async () => {
+    setLoading(true);
     console.log("sendInc()");
     const incedentData = {
       title,
@@ -59,6 +60,7 @@ const Service = observer(({ userstore, serviceStore }) => {
     if (rt) {
       alert("Incedent sent");
       clearForm();
+      setLoading(false);
     }
   };
 
@@ -91,8 +93,9 @@ const Service = observer(({ userstore, serviceStore }) => {
     >
       <ScrollView>
         <View>
+          {loading && <Spinner />}
           <ApplicationProvider {...eva} theme={eva.light}>
-            <View style={Styles.homecontainer}>
+            <View style={Styles.servicecontainer}>
               <Text category="h3" style={Styles.authHeader}>
                 {serviceStore.service}
               </Text>

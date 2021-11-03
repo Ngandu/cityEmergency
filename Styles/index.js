@@ -32,6 +32,12 @@ export default StyleSheet.create({
   homecontainer: {
     paddingTop: 90,
   },
+  servicecontainer: {
+    paddingTop: 90,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+  },
   homeButton: {
     backgroundColor: Colors.yellow,
     flex: 0.5,
