@@ -35,7 +35,7 @@ const Emergencies = observer(({ userstore, serviceStore }) => {
 
   useLayoutEffect(() => {
     // Fetch Products
-    console.log("Emergencies");
+    console.log("Emergencies,", userstore.user.uid);
     // fetch Incidents
     fetchincedents();
   }, []);

@@ -50,11 +50,11 @@ const Signin = observer(({ userstore }) => {
     console.log("handleSignin()");
     setLoading(true);
     if (!email) {
-      Alert.alert("Email field is required.");
+      // Alert.alert("Email field is required.");
       setLoading(false);
       return;
     } else if (!password) {
-      Alert.alert("Password field is required.");
+      // Alert.alert("Password field is required.");
       setLoading(false);
       return;
     } else {

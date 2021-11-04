@@ -82,6 +82,8 @@ const Home = observer(({ userstore, serviceStore }) => {
         "The control center has been notified and your relative contacted!"
       );
       setLoading(false);
+    } else {
+      setLoading(false);
     }
   };
 

@@ -122,7 +122,7 @@ export async function deleteRelatives(id) {
 
 // Send Incedent
 export async function sendIncedence(inc) {
-  console.log("sendIncedence");
+  console.log("sendIncedence", inc);
   try {
     const db = firebase.firestore();
     await db.collection("incedents").add(inc);
@@ -142,8 +142,7 @@ export async function getIncedents(userid) {
     await db
       .collection("incedents")
       .where("userid", "==", userid)
-      .where("status", "==", "Open")
-      .where("service", "!=", "Panic")
+      .orderBy("incent_date", "desc")
       .get()
       .then((snap) => {
         snap.docs.forEach((element) => {
